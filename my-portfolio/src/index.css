@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+/* This ensures the browser knows the default background is black */
+:root {
+  background-color: black;
+  color: white;
+}
