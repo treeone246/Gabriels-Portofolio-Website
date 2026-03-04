@@ -165,6 +165,7 @@ const ExperienceItem = ({
 }) => (
   <motion.div
     ref={itemRef}
+    data-exp-index={index}
     initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
     whileInView={{ opacity: 1, x: 0 }}
     viewport={{ once: false, amount: 0.3 }}
@@ -361,6 +362,7 @@ const ProjectCard = ({ project, index }) => (
 
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
+  const [canHover, setCanHover] = useState(false);
   const [isGeneratingPitch, setIsGeneratingPitch] = useState(false);
   const [generatedPitch, setGeneratedPitch] = useState('');
   const [showPitchModal, setShowPitchModal] = useState(false);
@@ -380,6 +382,24 @@ export default function App() {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const hoverMediaQuery = window.matchMedia('(hover: hover) and (pointer: fine)');
+
+    const applyHoverCapability = () => {
+      setCanHover(hoverMediaQuery.matches);
+    };
+
+    applyHoverCapability();
+
+    if (typeof hoverMediaQuery.addEventListener === 'function') {
+      hoverMediaQuery.addEventListener('change', applyHoverCapability);
+      return () => hoverMediaQuery.removeEventListener('change', applyHoverCapability);
+    }
+
+    hoverMediaQuery.addListener(applyHoverCapability);
+    return () => hoverMediaQuery.removeListener(applyHoverCapability);
   }, []);
 
   useEffect(() => {
@@ -894,6 +914,45 @@ export default function App() {
     };
   }, [safeActiveExperience, safeActiveProofIndex]);
 
+  useEffect(() => {
+    if (canHover || !experienceListRef.current || normalizedExperiences.length === 0) {
+      return undefined;
+    }
+
+    const listElement = experienceListRef.current;
+    const observedItems = Array.from(listElement.querySelectorAll('[data-exp-index]'));
+
+    if (observedItems.length === 0) {
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntries = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        if (visibleEntries.length === 0) {
+          return;
+        }
+
+        const targetIndex = Number(visibleEntries[0].target.getAttribute('data-exp-index'));
+        if (!Number.isNaN(targetIndex)) {
+          setActiveExperience(targetIndex);
+        }
+      },
+      {
+        root: null,
+        threshold: [0.2, 0.35, 0.5, 0.7],
+        rootMargin: '-18% 0px -30% 0px',
+      }
+    );
+
+    observedItems.forEach((item) => observer.observe(item));
+
+    return () => observer.disconnect();
+  }, [canHover, normalizedExperiences.length]);
+
   const handleGeneratePitch = async () => {
     setIsGeneratingPitch(true);
     setShowPitchModal(true);
@@ -965,14 +1024,14 @@ export default function App() {
     <div className="min-h-screen bg-black text-white selection:bg-orange-500 selection:text-black font-sans scroll-smooth overflow-x-hidden">
       <nav
         className={`fixed top-0 w-full z-50 transition-all duration-300 border-b ${
-          scrolled ? 'bg-black/90 backdrop-blur-md border-zinc-800 py-4' : 'bg-transparent border-transparent py-6'
+          scrolled ? 'bg-black/90 backdrop-blur-md border-zinc-800 py-3 sm:py-4' : 'bg-transparent border-transparent py-4 sm:py-6'
         }`}
       >
-        <div className="container mx-auto px-6 flex justify-between items-center">
+        <div className="container mx-auto px-4 sm:px-6 flex justify-between items-center">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="text-2xl font-black tracking-tighter"
+            className="text-lg sm:text-2xl font-black tracking-tighter"
           >
             GAB<span className="text-orange-500">.</span>SINISUKA
           </motion.div>
@@ -987,21 +1046,21 @@ export default function App() {
               </a>
             ))}
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleGeneratePitch}
-              className="px-4 py-2 border border-orange-500/50 text-orange-500 hover:bg-orange-500/10 text-xs font-bold rounded flex items-center gap-2 uppercase tracking-tighter transition-colors"
+              className="px-2.5 py-1.5 sm:px-4 sm:py-2 border border-orange-500/50 text-orange-500 hover:bg-orange-500/10 text-[10px] sm:text-xs font-bold rounded flex items-center gap-1.5 sm:gap-2 uppercase tracking-tight sm:tracking-tighter transition-colors"
               title="Generate AI Elevator Pitch"
             >
-              <Wand2 size={14} /> Pitch Me
+              <Wand2 size={12} className="sm:h-[14px] sm:w-[14px]" /> Pitch Me
             </motion.button>
             <div
               ref={contactMenuRef}
               className="relative"
-              onMouseEnter={() => setShowContactMenu(true)}
-              onMouseLeave={() => setShowContactMenu(false)}
+              onMouseEnter={canHover ? () => setShowContactMenu(true) : undefined}
+              onMouseLeave={canHover ? () => setShowContactMenu(false) : undefined}
             >
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -1009,7 +1068,7 @@ export default function App() {
                 onClick={() => setShowContactMenu((prev) => !prev)}
                 aria-expanded={showContactMenu}
                 aria-haspopup="true"
-                className="px-5 py-2 bg-orange-500 text-black text-xs font-black rounded uppercase tracking-tighter"
+                className="px-3 py-1.5 sm:px-5 sm:py-2 bg-orange-500 text-black text-[10px] sm:text-xs font-black rounded uppercase tracking-tight sm:tracking-tighter"
               >
                 Contact
               </motion.button>
@@ -1371,7 +1430,7 @@ export default function App() {
               </motion.div>
             </motion.div>
             <div className="md:hidden rounded-2xl border border-zinc-800 bg-zinc-950/50 p-4">
-              <p className="text-xs uppercase tracking-[0.28em] text-zinc-500 mb-2">Tap an experience card above to view proof images</p>
+              <p className="text-xs uppercase tracking-[0.28em] text-zinc-500 mb-2">Proof images update automatically while you scroll</p>
               <div className="grid grid-cols-3 gap-2">
                 {currentProofImages.map((proof, index) => (
                   <button
