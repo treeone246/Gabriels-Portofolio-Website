@@ -916,8 +916,8 @@ export default function App() {
 
       const listRect = listElement.getBoundingClientRect();
       const activeRect = activeElement.getBoundingClientRect();
-      const desiredShift = activeRect.top - listRect.top - 24;
-      const maxShift = Math.max(0, listElement.offsetHeight - panelElement.offsetHeight - 32);
+      const desiredShift = activeRect.top - listRect.top - 34;
+      const maxShift = Math.max(0, listElement.offsetHeight - panelElement.offsetHeight - 42);
       setExperiencePanelY(Math.max(0, Math.min(desiredShift, maxShift)));
     };
 
