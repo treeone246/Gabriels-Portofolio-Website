@@ -449,14 +449,14 @@ export default function App() {
 
   const defaultData = {
     name: 'Gabriel Winasta Sinisuka',
-    role: 'Robotics Engineer, Computer Vision Builder, and Informatics Student',
+    role: 'Robotics Engineer, Computer Vision Builder, Software Engineer, and Informatics Student',
     links: {
       github: 'https://github.com/treeone246',
       linkedin: 'https://www.linkedin.com/in/gabriel-winasta-sinisuka-998729227/',
       whatsapp: 'https://wa.me/6282170428003',
     },
     passion:
-      'I build systems that turn code into something physical, measurable, and useful. My work sits at the intersection of robotics, computer vision, embedded systems, and team execution, from autonomous vehicles and underwater robots to field-ready visual detection for industrial environments.',
+      'I build systems that turn code into something physical, measurable, and useful. My work sits at the intersection of robotics, computer vision, embedded systems, software and team execution, from software, autonomous vehicles, and underwater robots to field-ready visual detection for industrial environments.',
     eyeAI: {
       title: 'EyeAI: Computer Vision + LLM Monitoring Assistant',
       tagline: 'Interactive vehicle-entry intelligence and image understanding pipeline',
@@ -501,12 +501,12 @@ export default function App() {
     ],
     skills: [
       {
-        title: 'Computer Vision',
+        title: 'Computer Vision Engineering',
         label: 'Applied AI',
         icon: Zap,
         description:
-          'Built visual detection workflows for real-world industrial scenes and translated model output into practical field insight.',
-        items: ['Object Detection', 'Visual Annotation', 'Industrial Monitoring', 'On-site Validation'],
+          'Built visual detection workflows for real-world industrial scenes and translated model output into practical field insight and deployable features.',
+        items: ['Object Detection', 'YOLO Pipelines', 'Visual Annotation', 'Industrial Monitoring'],
       },
       {
         title: 'Robotics Systems',
@@ -517,9 +517,17 @@ export default function App() {
         items: ['ROV', 'ATSV', 'Quadcopter', 'Subsystem Integration'],
       },
       {
+        title: 'Software Engineering',
+        label: 'Architecture + Pipeline',
+        icon: FileText,
+        description:
+          'Capable of designing software system architecture and building end-to-end development pipelines with strong delivery discipline across backend, infrastructure, and AI workflows.',
+        items: ['System Architecture', 'DevOps Pipeline', 'Machine Learning', 'Deep Learning', 'MLOps'],
+      },
+      {
         title: 'Embedded and Electronics',
         label: 'Hardware',
-        icon: FileText,
+        icon: Briefcase,
         description:
           'Hands-on with prototyping, electronics assembly, actuator integration, and turning concept renders into testable hardware.',
         items: ['Electronics', 'Embedded Prototyping', 'System Assembly', 'Testing'],
@@ -1313,7 +1321,7 @@ export default function App() {
 
       <section id="skills" className="py-24 bg-zinc-950 min-h-screen flex flex-col justify-center">
         <div className="container mx-auto px-6 overflow-hidden">
-          <SectionHeading icon={FileText} subtitle="The blend of technical and leadership capabilities reflected across my competition, laboratory, and internship work.">
+          <SectionHeading icon={FileText} subtitle="A blend of software engineering, AI implementation, robotics integration, and leadership reflected across competition, laboratory, and internship work.">
             Skills
           </SectionHeading>
           <div className="mb-12 rounded-[2rem] border border-zinc-800 bg-[radial-gradient(circle_at_top_left,rgba(249,115,22,0.18),transparent_30%),linear-gradient(180deg,rgba(24,24,27,0.9),rgba(9,9,11,0.95))] p-5 md:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.28)]">
