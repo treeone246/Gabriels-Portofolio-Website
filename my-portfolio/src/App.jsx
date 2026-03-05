@@ -55,7 +55,6 @@ import eyeAI4 from '../Pictures/eyeAI4.png';
 import eyeAI5 from '../Pictures/eyeAI5.png';
 import eyeAI6 from '../Pictures/eyeAI6.png';
 import eyeAI7 from '../Pictures/eyeAI7.png';
-import thesisPdf from '../PDF/Skripsi Gabriel Winasta Sinisuka 205150201111001.pdf';
 
 const SectionHeading = ({ children, icon: Icon, subtitle }) => (
   <motion.div
@@ -1035,7 +1034,7 @@ export default function App() {
           >
             GAB<span className="text-orange-500">.</span>SINISUKA
           </motion.div>
-          <div className="hidden md:flex gap-8 text-sm font-bold uppercase tracking-widest">
+          <div className="hidden lg:flex gap-8 text-sm font-bold uppercase tracking-widest">
             {['About', 'Skills', 'Experience', 'Achievements', 'Projects', 'Thesis'].map((item) => (
               <a
                 key={item}
@@ -1343,7 +1342,7 @@ export default function App() {
           <SectionHeading icon={Briefcase} subtitle="Experience grounded in proof, from industry placement and technical organizations to national engineering competitions.">
             Professional Experience
           </SectionHeading>
-          <div className="grid grid-cols-1 md:grid-cols-[minmax(0,1.05fr)_minmax(300px,0.95fr)] gap-12 items-start max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.05fr)_minmax(300px,0.95fr)] gap-12 items-start max-w-7xl mx-auto">
             <div ref={experienceListRef}>
               {normalizedExperiences.map((exp, idx) => (
                 <ExperienceItem
@@ -1368,7 +1367,7 @@ export default function App() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: false, amount: 0.25 }}
               transition={{ duration: 0.6, ease: 'easeOut' }}
-              className="hidden md:block lg:sticky lg:top-28 relative self-start z-20"
+              className="hidden lg:block lg:sticky lg:top-28 relative self-start z-20"
             >
               <motion.div
                 ref={experiencePanelRef}
@@ -1555,15 +1554,16 @@ export default function App() {
             <p className="mt-6 text-[11px] uppercase tracking-[0.34em] text-orange-300">English Title</p>
             <h3 className="mt-3 text-2xl md:text-3xl font-black uppercase tracking-tight text-white">{safeThesis.englishTitle}</h3>
             <div className="mt-8 flex flex-wrap gap-3">
-              <a
-                href={thesisPdf}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl bg-orange-500 px-5 py-3 text-sm font-black text-black uppercase tracking-[0.15em] hover:bg-orange-400 transition-colors"
+              <button
+                type="button"
+                disabled
+                aria-disabled="true"
+                title="Thesis PDF access is temporarily disabled"
+                className="inline-flex items-center gap-2 rounded-xl border border-zinc-700 bg-zinc-900 px-5 py-3 text-sm font-black text-zinc-400 uppercase tracking-[0.15em] cursor-not-allowed"
               >
                 <FileText size={16} />
-                View Thesis PDF
-              </a>
+                View Thesis PDF (Soon)
+              </button>
               <button
                 type="button"
                 onClick={() => setShowThesisSummaryModal(true)}
