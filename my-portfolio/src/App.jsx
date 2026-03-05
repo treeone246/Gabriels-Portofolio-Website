@@ -910,13 +910,14 @@ export default function App() {
       const activeElement = experienceItemRefs.current[safeActiveExperience];
 
       if (!listElement || !panelElement || !activeElement) {
+        setExperiencePanelY(0);
         return;
       }
 
       const listRect = listElement.getBoundingClientRect();
       const activeRect = activeElement.getBoundingClientRect();
-      const desiredShift = activeRect.top - listRect.top - 14;
-      const maxShift = Math.max(0, listElement.offsetHeight - panelElement.offsetHeight);
+      const desiredShift = activeRect.top - listRect.top - 24;
+      const maxShift = Math.max(0, listElement.offsetHeight - panelElement.offsetHeight - 32);
       setExperiencePanelY(Math.max(0, Math.min(desiredShift, maxShift)));
     };
 
