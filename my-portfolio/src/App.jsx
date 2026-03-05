@@ -1562,7 +1562,7 @@ export default function App() {
                 className="inline-flex items-center gap-2 rounded-xl border border-zinc-700 bg-zinc-900 px-5 py-3 text-sm font-black text-zinc-400 uppercase tracking-[0.15em] cursor-not-allowed"
               >
                 <FileText size={16} />
-                View Thesis PDF (Soon)
+                View Thesis PDF
               </button>
               <button
                 type="button"
