@@ -529,8 +529,8 @@ export default function App() {
         label: 'Hardware',
         icon: Briefcase,
         description:
-          'Hands-on with prototyping, electronics assembly, actuator integration, and turning concept renders into testable hardware.',
-        items: ['Electronics', 'Embedded Prototyping', 'System Assembly', 'Testing'],
+          'Hands-on with prototyping, electronics assembly, actuator integration, and CAD-based 3D product design for robotics and IoT implementations.',
+        items: ['Electronics', 'Embedded Prototyping', 'CAD 3D Design', 'Robotics Product Design', 'IoT Product Prototyping'],
       },
       {
         title: 'Leadership and Delivery',
