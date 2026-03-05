@@ -363,6 +363,7 @@ export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [canHover, setCanHover] = useState(false);
   const [desktopZoom, setDesktopZoom] = useState(1);
+  const [enablePanelFollow, setEnablePanelFollow] = useState(false);
   const [isGeneratingPitch, setIsGeneratingPitch] = useState(false);
   const [generatedPitch, setGeneratedPitch] = useState('');
   const [showPitchModal, setShowPitchModal] = useState(false);
@@ -418,6 +419,24 @@ export default function App() {
 
     desktopMediaQuery.addListener(applyDesktopZoom);
     return () => desktopMediaQuery.removeListener(applyDesktopZoom);
+  }, []);
+
+  useEffect(() => {
+    const followMediaQuery = window.matchMedia('(min-width: 1440px)');
+
+    const applyPanelFollowCapability = () => {
+      setEnablePanelFollow(followMediaQuery.matches);
+    };
+
+    applyPanelFollowCapability();
+
+    if (typeof followMediaQuery.addEventListener === 'function') {
+      followMediaQuery.addEventListener('change', applyPanelFollowCapability);
+      return () => followMediaQuery.removeEventListener('change', applyPanelFollowCapability);
+    }
+
+    followMediaQuery.addListener(applyPanelFollowCapability);
+    return () => followMediaQuery.removeListener(applyPanelFollowCapability);
   }, []);
 
   useEffect(() => {
@@ -900,7 +919,7 @@ export default function App() {
     let settleTimer = 0;
 
     const alignExperiencePanel = () => {
-      if (!window.matchMedia('(min-width: 1024px)').matches) {
+      if (!enablePanelFollow) {
         setExperiencePanelY(0);
         return;
       }
@@ -947,7 +966,7 @@ export default function App() {
       resizeObserver.disconnect();
       window.removeEventListener('resize', queueAlign);
     };
-  }, [safeActiveExperience, safeActiveProofIndex]);
+  }, [enablePanelFollow, safeActiveExperience, safeActiveProofIndex]);
 
   useEffect(() => {
     if (canHover || !experienceListRef.current || normalizedExperiences.length === 0) {
@@ -1410,7 +1429,7 @@ export default function App() {
             >
               <motion.div
                 ref={experiencePanelRef}
-                animate={{ y: experiencePanelY }}
+                animate={{ y: enablePanelFollow ? experiencePanelY : 0 }}
                 transition={{ type: 'tween', duration: 0.28, ease: 'easeOut' }}
                 className="will-change-transform"
               >
