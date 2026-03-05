@@ -1303,7 +1303,7 @@ export default function App() {
                 {[
                   { icon: Zap, label: 'Computer Vision' },
                   { icon: FolderCode, label: 'Robotics Prototyping' },
-                  { icon: Trophy, label: 'National Finalist' },
+                  { icon: Trophy, label: 'Competitive Engineer' },
                   { icon: FileText, label: 'Embedded Systems' },
                 ].map((item) => (
                   <div key={item.label} className="flex items-center gap-3">
