@@ -529,8 +529,16 @@ export default function App() {
         label: 'Hardware',
         icon: Briefcase,
         description:
-          'Hands-on with prototyping, electronics assembly, actuator integration, and CAD-based 3D product design for robotics and IoT implementations.',
-        items: ['Electronics', 'Embedded Prototyping', 'CAD 3D Design', 'Robotics Product Design', 'IoT Product Prototyping'],
+          'Hands-on with prototyping, electronics assembly, actuator integration, and reliable hardware bring-up for robotics builds.',
+        items: ['Electronics', 'Embedded Prototyping', 'System Assembly', 'Hardware Testing'],
+      },
+      {
+        title: 'CAD and 3D Product Design',
+        label: 'Robotics + IoT',
+        icon: FolderCode,
+        description:
+          'Capable in CAD-based 3D design workflows to turn product concepts into manufacturable robotics and IoT-ready mechanical designs.',
+        items: ['CAD 3D Design', 'Robotics Product Design', 'IoT Product Design', 'Prototype-to-Build Workflow'],
       },
       {
         title: 'Leadership and Delivery',
