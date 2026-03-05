@@ -161,11 +161,12 @@ const ExperienceItem = ({
   mobileProof,
   activeProofIndex,
   onSelectProof,
+  disableSlideIn,
 }) => (
   <motion.div
     ref={itemRef}
     data-exp-index={index}
-    initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+    initial={{ opacity: 0, x: disableSlideIn ? 0 : (index % 2 === 0 ? -50 : 50) }}
     whileInView={{ opacity: 1, x: 0 }}
     viewport={{ once: false, amount: 0.3 }}
     transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -362,6 +363,7 @@ const ProjectCard = ({ project, index }) => (
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [canHover, setCanHover] = useState(false);
+  const [isMobileViewport, setIsMobileViewport] = useState(false);
   const [desktopZoom, setDesktopZoom] = useState(1);
   const [enablePanelFollow, setEnablePanelFollow] = useState(false);
   const [isGeneratingPitch, setIsGeneratingPitch] = useState(false);
@@ -404,6 +406,24 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    const mobileMediaQuery = window.matchMedia('(max-width: 767px)');
+
+    const applyMobileViewport = () => {
+      setIsMobileViewport(mobileMediaQuery.matches);
+    };
+
+    applyMobileViewport();
+
+    if (typeof mobileMediaQuery.addEventListener === 'function') {
+      mobileMediaQuery.addEventListener('change', applyMobileViewport);
+      return () => mobileMediaQuery.removeEventListener('change', applyMobileViewport);
+    }
+
+    mobileMediaQuery.addListener(applyMobileViewport);
+    return () => mobileMediaQuery.removeListener(applyMobileViewport);
+  }, []);
+
+  useEffect(() => {
     const desktopMediaQuery = window.matchMedia('(min-width: 1024px)');
 
     const applyDesktopZoom = () => {
@@ -422,7 +442,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const followMediaQuery = window.matchMedia('(min-width: 1440px)');
+    const followMediaQuery = window.matchMedia('(min-width: 1024px)');
 
     const applyPanelFollowCapability = () => {
       setEnablePanelFollow(followMediaQuery.matches);
@@ -1417,13 +1437,14 @@ export default function App() {
                   mobileProof={idx === safeActiveExperience ? currentProof : (exp.proofImages?.[0] || currentProof)}
                   activeProofIndex={safeActiveProofIndex}
                   onSelectProof={setActiveProofIndex}
+                  disableSlideIn={isMobileViewport}
                 />
               ))}
             </div>
             <motion.div
               initial={{ opacity: 0, x: 60 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false, amount: 0.25 }}
+              viewport={{ once: true, amount: 0.05 }}
               transition={{ duration: 0.6, ease: 'easeOut' }}
               className="hidden lg:block lg:sticky lg:top-28 relative self-start z-20"
             >
@@ -1433,82 +1454,61 @@ export default function App() {
                 transition={{ type: 'tween', duration: 0.28, ease: 'easeOut' }}
                 className="will-change-transform"
               >
-                <div className="relative overflow-hidden rounded-[2rem] border border-zinc-800 bg-zinc-950 shadow-[0_30px_80px_rgba(0,0,0,0.45)]">
-                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 via-transparent to-transparent z-10 pointer-events-none" />
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={`${activeExperience}-${activeProofIndex}-${currentProof.src}`}
-                      initial={{ opacity: 0, scale: 1.04 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.98 }}
-                      transition={{ duration: 0.45, ease: 'easeOut' }}
-                      className="group relative aspect-[4/5] overflow-hidden"
-                    >
-                      <img
-                        src={currentProof.src}
-                        alt={currentProof.alt}
-                        className="h-full w-full object-cover transition-all duration-700 md:grayscale md:blur-[8px] md:opacity-65 md:saturate-[0.65] md:group-hover:grayscale-0 md:group-hover:blur-none md:group-hover:opacity-100 md:group-hover:saturate-100"
-                      />
-                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent transition-opacity duration-500 md:group-hover:opacity-80" />
-                      <div className="pointer-events-none absolute inset-x-0 bottom-0 p-6 md:p-8">
-                        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-orange-500/25 bg-black/50 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.3em] text-orange-300">
-                          <ImageIcon size={12} />
-                          Proof Of Work
+                <div className="flex items-start gap-4">
+                  <div className="relative flex-1 overflow-hidden rounded-[2rem] border border-zinc-800 bg-zinc-950 shadow-[0_30px_80px_rgba(0,0,0,0.45)]">
+                    <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 via-transparent to-transparent z-10 pointer-events-none" />
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={`${activeExperience}-${activeProofIndex}-${currentProof.src}`}
+                        initial={{ opacity: 0, scale: 1.04 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.98 }}
+                        transition={{ duration: 0.45, ease: 'easeOut' }}
+                        className="group relative aspect-[4/5] overflow-hidden"
+                      >
+                        <img
+                          src={currentProof.src}
+                          alt={currentProof.alt}
+                          className="h-full w-full object-cover transition-all duration-700 md:grayscale md:blur-[8px] md:opacity-65 md:saturate-[0.65] md:group-hover:grayscale-0 md:group-hover:blur-none md:group-hover:opacity-100 md:group-hover:saturate-100"
+                        />
+                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent transition-opacity duration-500 md:group-hover:opacity-80" />
+                        <div className="pointer-events-none absolute inset-x-0 bottom-0 p-6 md:p-8">
+                          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-orange-500/25 bg-black/50 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.3em] text-orange-300">
+                            <ImageIcon size={12} />
+                            Proof Of Work
+                          </div>
+                          <h3 className="text-2xl font-bold text-white uppercase tracking-tight">{currentExperience.role}</h3>
+                          <p className="mt-2 text-sm text-zinc-300">{currentProof.caption}</p>
+                          <p className="mt-4 text-xs uppercase tracking-[0.28em] text-zinc-500">
+                            Hover image to bring the proof into focus
+                          </p>
                         </div>
-                        <h3 className="text-2xl font-bold text-white uppercase tracking-tight">{currentExperience.role}</h3>
-                        <p className="mt-2 text-sm text-zinc-300">{currentProof.caption}</p>
-                        <p className="mt-4 text-xs uppercase tracking-[0.28em] text-zinc-500">
-                          Hover image to bring the proof into focus
-                        </p>
-                      </div>
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
-                <div className="mt-5 grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  {currentProofImages.map((proof, index) => (
-                    <button
-                      key={proof.src}
-                      type="button"
-                      onClick={() => setActiveProofIndex(index)}
-                      className={`relative overflow-hidden rounded-2xl border transition-all ${
-                        index === safeActiveProofIndex ? 'border-orange-500 shadow-[0_0_0_1px_rgba(249,115,22,0.45)]' : 'border-zinc-800'
-                      }`}
-                    >
-                      <img
-                        src={proof.src}
-                        alt={proof.alt}
-                        className={`h-24 w-full object-cover transition-all duration-500 ${
-                          index === safeActiveProofIndex ? 'grayscale-0 opacity-100' : 'grayscale opacity-60 hover:grayscale-0 hover:opacity-100'
+                      </motion.div>
+                    </AnimatePresence>
+                  </div>
+                  <div className="w-24 xl:w-28 grid grid-cols-1 gap-3">
+                    {currentProofImages.map((proof, index) => (
+                      <button
+                        key={proof.src}
+                        type="button"
+                        onClick={() => setActiveProofIndex(index)}
+                        className={`relative overflow-hidden rounded-2xl border transition-all ${
+                          index === safeActiveProofIndex ? 'border-orange-500 shadow-[0_0_0_1px_rgba(249,115,22,0.45)]' : 'border-zinc-800'
                         }`}
-                      />
-                    </button>
-                  ))}
+                      >
+                        <img
+                          src={proof.src}
+                          alt={proof.alt}
+                          className={`h-20 xl:h-24 w-full object-cover transition-all duration-500 ${
+                            index === safeActiveProofIndex ? 'grayscale-0 opacity-100' : 'grayscale opacity-60 hover:grayscale-0 hover:opacity-100'
+                          }`}
+                        />
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </motion.div>
             </motion.div>
-            <div className="md:hidden rounded-2xl border border-zinc-800 bg-zinc-950/50 p-4">
-              <p className="text-xs uppercase tracking-[0.28em] text-zinc-500 mb-2">Proof images update automatically while you scroll</p>
-              <div className="grid grid-cols-3 gap-2">
-                {currentProofImages.map((proof, index) => (
-                  <button
-                    key={`${proof.src}-mobile-preview`}
-                    type="button"
-                    onClick={() => setActiveProofIndex(index)}
-                    className={`overflow-hidden rounded-xl border transition-all ${
-                      index === safeActiveProofIndex ? 'border-orange-500 shadow-[0_0_0_1px_rgba(249,115,22,0.45)]' : 'border-zinc-800'
-                    }`}
-                  >
-                    <img
-                      src={proof.src}
-                      alt={proof.alt}
-                      className={`h-16 w-full object-cover transition-all duration-300 ${
-                        index === safeActiveProofIndex ? 'opacity-100' : 'opacity-65'
-                      }`}
-                    />
-                  </button>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </section>
