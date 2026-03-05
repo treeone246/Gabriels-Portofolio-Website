@@ -9,9 +9,17 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: cloudflare-pages-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PROJECT_NAME: gabrielportfolio
+      BUILD_DIR: dist
 
     steps:
       - name: Checkout
@@ -22,16 +30,28 @@ jobs:
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
+      - name: Build project
         run: npm run build
 
+      - name: Validate build output
+        run: |
+          if [ ! -d "$BUILD_DIR" ]; then
+            echo "Expected build output directory '$BUILD_DIR' was not found."
+            exit 1
+          fi
+
+      - name: List files (Debug)
+        run: ls -la && ls -la "$BUILD_DIR"
+
       - name: Deploy to Cloudflare Pages
+        if: ${{ github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main' }}
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name gabrielportfolio --commit-dirty=true
+          command: pages deploy ${{ env.BUILD_DIR }} --project-name=${{ env.PROJECT_NAME }}
