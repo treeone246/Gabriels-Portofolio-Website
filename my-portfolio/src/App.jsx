@@ -362,6 +362,7 @@ const ProjectCard = ({ project, index }) => (
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [canHover, setCanHover] = useState(false);
+  const [desktopZoom, setDesktopZoom] = useState(1);
   const [isGeneratingPitch, setIsGeneratingPitch] = useState(false);
   const [generatedPitch, setGeneratedPitch] = useState('');
   const [showPitchModal, setShowPitchModal] = useState(false);
@@ -399,6 +400,24 @@ export default function App() {
 
     hoverMediaQuery.addListener(applyHoverCapability);
     return () => hoverMediaQuery.removeListener(applyHoverCapability);
+  }, []);
+
+  useEffect(() => {
+    const desktopMediaQuery = window.matchMedia('(min-width: 1024px)');
+
+    const applyDesktopZoom = () => {
+      setDesktopZoom(desktopMediaQuery.matches ? 0.75 : 1);
+    };
+
+    applyDesktopZoom();
+
+    if (typeof desktopMediaQuery.addEventListener === 'function') {
+      desktopMediaQuery.addEventListener('change', applyDesktopZoom);
+      return () => desktopMediaQuery.removeEventListener('change', applyDesktopZoom);
+    }
+
+    desktopMediaQuery.addListener(applyDesktopZoom);
+    return () => desktopMediaQuery.removeListener(applyDesktopZoom);
   }, []);
 
   useEffect(() => {
@@ -881,7 +900,7 @@ export default function App() {
     let settleTimer = 0;
 
     const alignExperiencePanel = () => {
-      if (!window.matchMedia('(min-width: 768px)').matches) {
+      if (!window.matchMedia('(min-width: 1024px)').matches) {
         setExperiencePanelY(0);
         return;
       }
@@ -896,8 +915,8 @@ export default function App() {
 
       const listRect = listElement.getBoundingClientRect();
       const activeRect = activeElement.getBoundingClientRect();
-      const desiredShift = activeRect.top - listRect.top;
-      const maxShift = Math.max(0, listElement.scrollHeight - panelElement.offsetHeight);
+      const desiredShift = activeRect.top - listRect.top - 14;
+      const maxShift = Math.max(0, listElement.offsetHeight - panelElement.offsetHeight);
       setExperiencePanelY(Math.max(0, Math.min(desiredShift, maxShift)));
     };
 
@@ -1036,7 +1055,10 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white selection:bg-orange-500 selection:text-black font-sans scroll-smooth overflow-x-hidden">
+    <div
+      className="min-h-screen bg-black text-white selection:bg-orange-500 selection:text-black font-sans scroll-smooth overflow-x-hidden"
+      style={{ zoom: desktopZoom }}
+    >
       <nav
         className={`fixed top-0 w-full z-50 transition-all duration-300 border-b ${
           scrolled ? 'bg-black/90 backdrop-blur-md border-zinc-800 py-3 sm:py-4' : 'bg-transparent border-transparent py-4 sm:py-6'
@@ -1359,7 +1381,7 @@ export default function App() {
             Professional Experience
           </SectionHeading>
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.05fr)_minmax(300px,0.95fr)] gap-12 items-start max-w-7xl mx-auto">
-            <div ref={experienceListRef}>
+            <div ref={experienceListRef} className="pb-8 lg:pb-20">
               {normalizedExperiences.map((exp, idx) => (
                 <ExperienceItem
                   key={exp.role}
@@ -1388,7 +1410,7 @@ export default function App() {
               <motion.div
                 ref={experiencePanelRef}
                 animate={{ y: experiencePanelY }}
-                transition={{ type: 'spring', stiffness: 120, damping: 24, mass: 0.7 }}
+                transition={{ type: 'tween', duration: 0.28, ease: 'easeOut' }}
                 className="will-change-transform"
               >
                 <div className="relative overflow-hidden rounded-[2rem] border border-zinc-800 bg-zinc-950 shadow-[0_30px_80px_rgba(0,0,0,0.45)]">
