@@ -55,7 +55,7 @@ import eyeAI4 from '../Pictures/eyeAI4.png';
 import eyeAI5 from '../Pictures/eyeAI5.png';
 import eyeAI6 from '../Pictures/eyeAI6.png';
 import eyeAI7 from '../Pictures/eyeAI7.png';
-import eyeAI8 from '../Pictures/eyeAI8.jpg';
+import eyeAI8 from '../Pictures/eyeAI8.JPG';
 
 const SectionHeading = ({ children, icon: Icon, subtitle }) => (
   <motion.div
