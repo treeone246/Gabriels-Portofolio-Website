@@ -55,6 +55,7 @@ import eyeAI4 from '../Pictures/eyeAI4.png';
 import eyeAI5 from '../Pictures/eyeAI5.png';
 import eyeAI6 from '../Pictures/eyeAI6.png';
 import eyeAI7 from '../Pictures/eyeAI7.png';
+import eyeAI8 from '../Pictures/eyeAI8.jpg';
 
 const SectionHeading = ({ children, icon: Icon, subtitle }) => (
   <motion.div
@@ -527,6 +528,7 @@ export default function App() {
         'Integration-ready output for existing systems',
       ],
       shots: [
+        { src: eyeAI8, label: 'Extended EyeAI Monitoring Interface' },
         { src: eyeAI1, label: 'Dashboard Overview' },
         { src: eyeAI2, label: 'Interactive LLM Chat Flow' },
         { src: eyeAI3, label: 'eyeAI User Login Interface' },
@@ -1565,7 +1567,7 @@ export default function App() {
                   <img
                     src={currentEyeAIProof.src}
                     alt={currentEyeAIProof.label}
-                    className="h-[260px] sm:h-[320px] w-full object-cover transition-all duration-700 md:grayscale md:opacity-75 md:hover:grayscale-0 md:hover:opacity-100"
+                    className="h-[260px] sm:h-[320px] w-full object-cover transition-all duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
                   <p className="absolute bottom-4 left-4 right-4 text-sm text-zinc-200">{currentEyeAIProof.label}</p>
@@ -1584,7 +1586,7 @@ export default function App() {
                         src={shot.src}
                         alt={shot.label}
                         className={`h-14 w-full object-cover transition-all duration-500 ${
-                          index === activeEyeAIShot ? 'opacity-100 grayscale-0' : 'opacity-60 grayscale hover:opacity-100 hover:grayscale-0'
+                          index === activeEyeAIShot ? 'opacity-100' : 'opacity-75 hover:opacity-100'
                         }`}
                       />
                     </button>
