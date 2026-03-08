@@ -22,7 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# Personal/sensitive media folders (new files only; already tracked files remain tracked)
-PDF/
-Pictures/
