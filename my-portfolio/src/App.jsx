@@ -1131,7 +1131,7 @@ export default function App() {
               href={resumePdf}
               target="_blank"
               rel="noreferrer"
-              className="px-3 py-1.5 sm:px-4 sm:py-2 border border-zinc-700 text-zinc-200 hover:border-orange-500/50 hover:text-orange-300 text-[10px] sm:text-xs font-bold rounded uppercase tracking-tight transition-colors"
+              className="hidden sm:inline-flex px-3 py-1.5 sm:px-4 sm:py-2 border border-zinc-700 text-zinc-200 hover:border-orange-500/50 hover:text-orange-300 text-[10px] sm:text-xs font-bold rounded uppercase tracking-tight transition-colors"
             >
               Resume/CV
             </a>
@@ -1142,7 +1142,9 @@ export default function App() {
               className="px-2.5 py-1.5 sm:px-4 sm:py-2 border border-orange-500/50 text-orange-500 hover:bg-orange-500/10 text-[10px] sm:text-xs font-bold rounded flex items-center gap-1.5 sm:gap-2 uppercase tracking-tight sm:tracking-tighter transition-colors"
               title="Generate AI Elevator Pitch"
             >
-              <Wand2 size={12} className="sm:h-[14px] sm:w-[14px]" /> Pitch Me
+              <Wand2 size={12} className="sm:h-[14px] sm:w-[14px]" />
+              <span className="hidden sm:inline">Pitch Me</span>
+              <span className="sm:hidden">Pitch</span>
             </motion.button>
             <div
               ref={contactMenuRef}
@@ -1170,6 +1172,16 @@ export default function App() {
                     transition={{ duration: 0.18, ease: 'easeOut' }}
                     className="absolute right-0 mt-3 w-56 rounded-2xl border border-zinc-800 bg-zinc-950/95 p-2 shadow-[0_20px_45px_rgba(0,0,0,0.45)] backdrop-blur-md"
                   >
+                    <a
+                      href={resumePdf}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={() => setShowContactMenu(false)}
+                      className="sm:hidden flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-zinc-200 hover:bg-zinc-900 hover:text-white transition-colors"
+                    >
+                      <FileText size={16} className="text-orange-400" />
+                      <span>Resume/CV</span>
+                    </a>
                     <a
                       href={safeLinks.linkedin}
                       target="_blank"
