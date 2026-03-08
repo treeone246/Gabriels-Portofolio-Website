@@ -56,6 +56,7 @@ import eyeAI5 from '../Pictures/eyeAI5.png';
 import eyeAI6 from '../Pictures/eyeAI6.png';
 import eyeAI7 from '../Pictures/eyeAI7.png';
 import eyeAI8 from '../Pictures/eyeAI8.JPG';
+import resumePdf from '../PDF/Official_CV_GabrielWinastaSinisuka.pdf';
 
 const SectionHeading = ({ children, icon: Icon, subtitle }) => (
   <motion.div
@@ -1126,6 +1127,14 @@ export default function App() {
             ))}
           </div>
           <div className="flex items-center gap-2 sm:gap-4">
+            <a
+              href={resumePdf}
+              target="_blank"
+              rel="noreferrer"
+              className="px-3 py-1.5 sm:px-4 sm:py-2 border border-zinc-700 text-zinc-200 hover:border-orange-500/50 hover:text-orange-300 text-[10px] sm:text-xs font-bold rounded uppercase tracking-tight transition-colors"
+            >
+              Resume/CV
+            </a>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
