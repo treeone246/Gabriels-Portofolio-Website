@@ -56,7 +56,6 @@ import eyeAI5 from '../Pictures/eyeAI5.png';
 import eyeAI6 from '../Pictures/eyeAI6.png';
 import eyeAI7 from '../Pictures/eyeAI7.png';
 import eyeAI8 from '../Pictures/eyeAI8.JPG';
-import resumePdf from '../PDF/Official_CV_GabrielWinastaSinisuka.pdf';
 
 const SectionHeading = ({ children, icon: Icon, subtitle }) => (
   <motion.div
@@ -1127,15 +1126,6 @@ export default function App() {
             ))}
           </div>
           <div className="flex items-center gap-2 sm:gap-4">
-            <button
-              type="button"
-              disabled
-              aria-disabled="true"
-              title="Resume/CV access is temporarily disabled"
-              className="hidden sm:inline-flex px-3 py-1.5 sm:px-4 sm:py-2 border border-zinc-800 bg-zinc-900 text-zinc-500 text-[10px] sm:text-xs font-bold rounded uppercase tracking-tight cursor-not-allowed"
-            >
-              Resume/CV
-            </button>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -1173,16 +1163,6 @@ export default function App() {
                     transition={{ duration: 0.18, ease: 'easeOut' }}
                     className="absolute right-0 mt-3 w-56 rounded-2xl border border-zinc-800 bg-zinc-950/95 p-2 shadow-[0_20px_45px_rgba(0,0,0,0.45)] backdrop-blur-md"
                   >
-                    <button
-                      type="button"
-                      disabled
-                      aria-disabled="true"
-                      title="Resume/CV access is temporarily disabled"
-                      className="sm:hidden w-full flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-zinc-500 cursor-not-allowed"
-                    >
-                      <FileText size={16} className="text-orange-400" />
-                      <span>Resume/CV</span>
-                    </button>
                     <a
                       href={safeLinks.linkedin}
                       target="_blank"
