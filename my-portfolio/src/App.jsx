@@ -1127,14 +1127,15 @@ export default function App() {
             ))}
           </div>
           <div className="flex items-center gap-2 sm:gap-4">
-            <a
-              href={resumePdf}
-              target="_blank"
-              rel="noreferrer"
-              className="hidden sm:inline-flex px-3 py-1.5 sm:px-4 sm:py-2 border border-zinc-700 text-zinc-200 hover:border-orange-500/50 hover:text-orange-300 text-[10px] sm:text-xs font-bold rounded uppercase tracking-tight transition-colors"
+            <button
+              type="button"
+              disabled
+              aria-disabled="true"
+              title="Resume/CV access is temporarily disabled"
+              className="hidden sm:inline-flex px-3 py-1.5 sm:px-4 sm:py-2 border border-zinc-800 bg-zinc-900 text-zinc-500 text-[10px] sm:text-xs font-bold rounded uppercase tracking-tight cursor-not-allowed"
             >
               Resume/CV
-            </a>
+            </button>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -1172,16 +1173,16 @@ export default function App() {
                     transition={{ duration: 0.18, ease: 'easeOut' }}
                     className="absolute right-0 mt-3 w-56 rounded-2xl border border-zinc-800 bg-zinc-950/95 p-2 shadow-[0_20px_45px_rgba(0,0,0,0.45)] backdrop-blur-md"
                   >
-                    <a
-                      href={resumePdf}
-                      target="_blank"
-                      rel="noreferrer"
-                      onClick={() => setShowContactMenu(false)}
-                      className="sm:hidden flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-zinc-200 hover:bg-zinc-900 hover:text-white transition-colors"
+                    <button
+                      type="button"
+                      disabled
+                      aria-disabled="true"
+                      title="Resume/CV access is temporarily disabled"
+                      className="sm:hidden w-full flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-zinc-500 cursor-not-allowed"
                     >
                       <FileText size={16} className="text-orange-400" />
                       <span>Resume/CV</span>
-                    </a>
+                    </button>
                     <a
                       href={safeLinks.linkedin}
                       target="_blank"
